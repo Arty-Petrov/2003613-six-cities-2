@@ -1,7 +1,7 @@
 # Личный проект «Шесть городов»
 
 * Студент: [Артем Петров](https://up.htmlacademy.ru/nodejs-api/2/user/2003613).
-* Наставник: `Неизвестно`.
+* Наставник: [Михаил Кислый](https://htmlacademy.ru/profile/smart-grizzly).
 
 ---
 
