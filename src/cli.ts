@@ -1,5 +1,6 @@
-#!/usr/bin/env node
+#!/usr/bin/env ts-node
 
+import 'reflect-metadata';
 import GenerateCommand from './cli-command/generate-command.js';
 import VersionCommand from './cli-command/version-command.js';
 import HelpCommand from './cli-command/help-command.js';
@@ -9,7 +10,6 @@ import CLIApplication from './app/cli-application.js';
 const myManager = new CLIApplication();
 myManager.registerCommands([
   new HelpCommand, new VersionCommand,
-  new ImportCommand,  new ImportCommand,
-  new GenerateCommand
+  new ImportCommand, new GenerateCommand
 ]);
 myManager.processCommand(process.argv);

@@ -1,4 +1,4 @@
-export enum LoggingType {
+export enum OfferType {
   Apartment = 'apartment',
   House = 'house',
   Room = 'room',
