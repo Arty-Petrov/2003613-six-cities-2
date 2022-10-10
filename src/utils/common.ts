@@ -1,6 +1,7 @@
+import * as crypto from 'crypto';
 import {City} from '../const/city.enum.js';
 import {Features} from '../const/features.enum.js';
-import {LoggingType} from '../const/logging-type.enum.js';
+import {OfferType} from '../const/offer-type.enum.js';
 import { Offer } from '../types/offer.type.js';
 
 export const createOffer = (row: string) => {
@@ -21,7 +22,7 @@ export const createOffer = (row: string) => {
     isPremium: !!isPremium,
     isFavorite: !!isFavorite,
     rating: Number.parseFloat(rating),
-    type: type as LoggingType,
+    type: type as OfferType,
     roomsCount: Number.parseInt(roomsCount,10),
     guestsCount: Number.parseInt(guestsCount,10),
     price: Number.parseInt(price,10),
@@ -43,3 +44,8 @@ export const createOffer = (row: string) => {
 
 export const getErrorMessage = (error: unknown): string =>
   error instanceof Error ? error.message : '';
+
+export const createSHA256 = (line: string, salt: string): string => {
+  const shaHasher = crypto.createHmac('sha256', salt);
+  return shaHasher.update(line).digest('hex');
+};

@@ -16,6 +16,7 @@
     "compile": "tsc -p tsconfig.json",
     "clean": "rimraf dist",
     "ts": "ts-node",
+    "tsd": "ts-node --inspect",
     "mock:server": "json-server ./mocks/mock-server-data.json --port 3123"
   },
   "devDependencies": {
@@ -40,12 +41,14 @@
   },
   "dependencies": {
     "chalk": "^5.0.1",
+    "@typegoose/typegoose": "^9.8.1",
     "convict": "^6.2.3",
     "convict-format-with-validator": "^6.2.0",
     "dayjs": "^1.11.5",
     "dotenv": "^16.0.2",
     "got": "^12.4.1",
     "inversify": "^6.0.1",
+    "mongoose": "^6.3.1",
     "pino": "^7.10.0",
     "reflect-metadata": "^0.1.13"
   }

@@ -1,6 +1,6 @@
 import {City} from '../../const/city.enum.js';
 import {Features} from '../../const/features.enum.js';
-import {LoggingType} from '../../const/logging-type.enum.js';
+import {OfferType} from '../../const/offer-type.enum.js';
 import {MockData} from '../../types/mock-data.type.js';
 import {
   generateRandomValue,
@@ -42,7 +42,7 @@ export default class OfferGenerator implements OfferGeneratorInterface {
     const isPremium = !!generateRandomValue(0,1);
     const isFavorite = !!generateRandomValue(0,1);
     const rating = generateRandomValue(MIN_RATING, MAX_RATING, RATING_ACCURACY).toString();
-    const type = getRandomItem<string>(Array.from(Object.values(LoggingType)));
+    const type = getRandomItem<string>(Array.from(Object.values(OfferType)));
     const roomsCount = generateRandomValue(MIN_ROOMS, MAX_ROOMS).toString();
     const guestsCount = generateRandomValue(MIN_GUESTS, MAX_GUESTS).toString();
     const price = generateRandomValue(MIN_PRICE, MAX_PRICE).toString();

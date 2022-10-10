@@ -1,8 +1,8 @@
-import {User} from './user.type.js';
-import {Address} from './address.type.js';
-import {LoggingType} from '../const/logging-type.enum.js';
-import {City} from '../const/city.enum.js';
-import {Features} from '../const/features.enum.js';
+import { City } from '../const/city.enum.js';
+import { Features } from '../const/features.enum.js';
+import { OfferType } from '../const/offer-type.enum.js';
+import { Address } from './address.type.js';
+import { User } from './user.type.js';
 
 
 export type Offer = {
@@ -15,7 +15,7 @@ export type Offer = {
   isPremium: boolean;// Обязательное. Признак премиальности предложения;
   isFavorite: boolean; //Обязательное. Признак того, что предложение принадлежит списку избранных предложений пользователя;
   rating: number; //Обязательное. Число от 1 до 5. Допускаются числа с запятой (1 знак после запятой);
-  type: LoggingType; //Обязательное. Один из вариантов: `apartment`,`house`, `room`, `hotel`;
+  type: OfferType; //Обязательное. Один из вариантов: `apartment`,`house`, `room`, `hotel`;
   roomsCount: number; //Обязательное. Мин. 1, Макс. 8;
   guestsCount: number; //Обязательное. Мин. 1, Макс. 10;
   price: number; //Обязательное. Мин. 100, Макс. 100 000;
