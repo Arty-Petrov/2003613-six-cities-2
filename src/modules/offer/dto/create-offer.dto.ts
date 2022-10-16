@@ -4,7 +4,7 @@ import { Address } from '../../../types/address.type.js';
 
 export default class CreateOfferDto {
   public title!: string;
-  public description!: string;
+  public offerDescription!: string;
   public postDate!: Date;
   public city!: City;
   public preview!: string;
@@ -12,7 +12,7 @@ export default class CreateOfferDto {
   public isPremium!: boolean;
   public isFavorite!: boolean;
   public rating!: number;
-  public type!: OfferType;
+  public offerType!: OfferType;
   public roomsCount!: number;
   public guestsCount!: number;
   public price!: number;

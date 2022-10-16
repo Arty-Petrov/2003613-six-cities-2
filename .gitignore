@@ -3,6 +3,7 @@
 /mocks/
 /build/
 /lib/
+/gen/
 /dist/
 /docs/
 .idea/*

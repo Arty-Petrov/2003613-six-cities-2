@@ -14,7 +14,7 @@ export const createOffer = (row: string) => {
     longitude] = tokens;
   return {
     title,
-    description,
+    offerDescription: description,
     postDate: new Date(postDate),
     city: city as City,
     preview,
@@ -22,15 +22,15 @@ export const createOffer = (row: string) => {
     isPremium: !!isPremium,
     isFavorite: !!isFavorite,
     rating: Number.parseFloat(rating),
-    type: type as OfferType,
+    offerType: type as OfferType,
     roomsCount: Number.parseInt(roomsCount,10),
     guestsCount: Number.parseInt(guestsCount,10),
     price: Number.parseInt(price,10),
     features: features.split(';').map((feature) => feature as Features),
-    author: {
+    host: {
       name: name,
       email: email,
-      avatarPath: avatarPath,
+      avatarUrl: avatarPath,
       password: password,
       isPro: !!isPro
     },
