@@ -29,7 +29,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
     minlength: 20,
     maxlength: 1024
   })
-  public description!: string;
+  public offerDescription!: string;
 
   @prop({required: true})
   public postDate!: Date;
@@ -67,7 +67,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
     type: () => String,
     enum: OfferType
   })
-  public type!: OfferType;
+  public offerType!: OfferType;
 
   @prop({
     required: true,
