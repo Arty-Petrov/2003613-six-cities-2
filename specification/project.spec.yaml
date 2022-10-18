@@ -740,9 +740,6 @@ components:
         text:
           type: string
           example: Прекрасное место, приедем еще!
-        postDate:
-          type: string
-          example: 2022-08-12T21:00:00.000Z
         rating:
           type: number
           example: 3.8
@@ -767,7 +764,7 @@ components:
           example: 2022-08-12T21:00:00.000Z
         rating:
           type: number
-          example: 3.8
+          example: 3
         userId:
           type: string
           example: tDBrmkMbToBPh7B6fhqswCEU
