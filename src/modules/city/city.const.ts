@@ -1,0 +1,2 @@
+const DEFAULT_LATITUDE = 0;
+const DEFAULT_LONGITUDE = 0;
