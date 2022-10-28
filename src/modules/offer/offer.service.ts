@@ -18,7 +18,7 @@ export default class OfferService implements OfferServiceInterface {
   ) {}
 
   public async create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity | null>> {
-    this.logger.info(`${dto.cityId}`)
+    this.logger.info(`${dto.cityId}`);
     const offer = await this.offerModel.create(dto);
     this.logger.info(`New offer created: ${dto.title}`);
     return offer;
@@ -83,15 +83,18 @@ export default class OfferService implements OfferServiceInterface {
       .exec();
   }
 
-  public async updateCommentsCountAndRating(offerId: string, ratingsSum: number): Promise<DocumentType<OfferEntity> | null> {
+  public async updateCommentsCountAndRating(
+    offerId: string,
+    rating: number,
+    commentsCount: number
+  ): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findByIdAndUpdate(offerId,
         {
-          $inc: {commentCount: 1,},
-          $set: {rating: {
-            $divide: [ratingsSum, {
-              $sum: ['$commentsCount', 1]
-            }]}},
+          '$set': {
+            commentsCount: commentsCount,
+            rating: rating
+          },
         },
         {new: true});
   }

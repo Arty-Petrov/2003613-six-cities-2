@@ -16,6 +16,7 @@ import CityController from './modules/city/city.controller.js';
 import { CityEntity, CityModel } from './modules/city/city.entity.js';
 import CityService from './modules/city/city.service.js';
 import { CommentServiceInterface } from './modules/comment/comment-service.interface.js';
+import CommentController from './modules/comment/comment.controller.js';
 import { CommentEntity, CommentModel } from './modules/comment/comment.entity.js';
 import CommentService from './modules/comment/comment.service.js';
 import { OfferServiceInterface } from './modules/offer/offer-service.interface.js';
@@ -45,6 +46,7 @@ applicationContainer.bind<types.ModelType<CityEntity>>(Component.CityModel).toCo
 applicationContainer.bind<ControllerInterface>(Component.UserController).to(UserController).inSingletonScope();
 applicationContainer.bind<ControllerInterface>(Component.OfferController).to(OfferController).inSingletonScope();
 applicationContainer.bind<ControllerInterface>(Component.CityController).to(CityController).inSingletonScope();
+applicationContainer.bind<ControllerInterface>(Component.CommentController).to(CommentController).inSingletonScope();
 applicationContainer.bind<ExceptionFilterInterface>(Component.ExceptionFilterInterface).to(ExceptionFilter).inSingletonScope();
 
 const application = applicationContainer.get<Application>(Component.Application);
