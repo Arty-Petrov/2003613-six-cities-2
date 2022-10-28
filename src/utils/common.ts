@@ -1,7 +1,8 @@
+import { ClassConstructor, plainToInstance } from 'class-transformer';
 import * as crypto from 'crypto';
-import {City} from '../const/city.enum.js';
-import {Features} from '../const/features.enum.js';
-import {OfferType} from '../const/offer-type.enum.js';
+import {City} from '../types/city.enum.js';
+import {Features} from '../types/features.enum.js';
+import {OfferType} from '../types/offer-type.enum.js';
 import { Offer } from '../types/offer.type.js';
 
 export const createOffer = (row: string) => {
@@ -14,7 +15,7 @@ export const createOffer = (row: string) => {
     longitude] = tokens;
   return {
     title,
-    offerDescription: description,
+    description: description,
     postDate: new Date(postDate),
     city: city as City,
     preview,
@@ -49,3 +50,10 @@ export const createSHA256 = (line: string, salt: string): string => {
   const shaHasher = crypto.createHmac('sha256', salt);
   return shaHasher.update(line).digest('hex');
 };
+
+export const fillDTO = <T, V>(someDto: ClassConstructor<T>, plainObject: V) =>
+  plainToInstance(someDto, plainObject, {excludeExtraneousValues: true});
+
+export const createErrorObject = (message: string) => ({
+  error: message,
+});

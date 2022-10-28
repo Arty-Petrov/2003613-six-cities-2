@@ -1,6 +1,6 @@
-import {City} from '../../const/city.enum.js';
-import {Features} from '../../const/features.enum.js';
-import {OfferType} from '../../const/offer-type.enum.js';
+import {City} from '../../types/city.enum.js';
+import {Features} from '../../types/features.enum.js';
+import {OfferType} from '../../types/offer-type.enum.js';
 import {MockData} from '../../types/mock-data.type.js';
 import {
   generateRandomValue,

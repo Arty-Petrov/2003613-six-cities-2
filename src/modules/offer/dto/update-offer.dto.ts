@@ -1,12 +1,11 @@
-import { City } from '../../../const/city.enum.js';
-import { OfferType } from '../../../const/offer-type.enum.js';
 import { Address } from '../../../types/address.type.js';
+import { OfferType } from '../../../types/offer-type.enum.js';
 
 export default class UpdateOfferDto {
   public title!: string;
-  public offerDescription!: string;
+  public description!: string;
   public postDate!: Date;
-  public city!: City;
+  public cityId!: string;
   public preview!: string;
   public photos!: string[];
   public isPremium!: boolean;

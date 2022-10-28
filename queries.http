@@ -2,3 +2,109 @@
 GET http://localhost:3123/api HTTP/1.1
 
 ###
+# Города
+## Получить список гороов
+
+GET http://localhost:4000/cities HTTP/1.1
+Content-Type: application/json
+
+###
+
+## Создать гороов
+
+POST http://localhost:4000/cities HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Цветы"
+}
+
+###
+# Пользователи
+
+## Регистрация пользователя
+
+POST http://localhost:4000/users/register HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Jack",
+  "email": "torans@overlook.net",
+  "avatarUrl": "torrance.png",
+  "isPro": "true",
+  "password": "shining"
+}
+###
+
+## Вход в закрытую часть приложения
+
+POST http://localhost:4000/users/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "torans@overlook.net",
+  "password": "shining"
+}
+###
+
+# Объявления
+## Объявление по идентификатору
+
+GET http://localhost:4000/offers/63597a7e95a2767ad5fdc1c8 HTTP/1.1
+
+###
+
+## Список объявлений
+
+GET http://localhost:4000/offers?count=5 HTTP/1.1
+
+###
+
+## Создание объявления
+
+POST http://localhost:4000/offers HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "Билли Саммерс",
+  "description": "У нас тут все ништяк. Ларек за углом. Шава 24 часа. Приезжайте! Интернетов нет!",
+  "postDate": "2022-05-12T11:56:37.573Z",
+  "city": "Paris",
+  "preview": "felix-fuchs-PXAcac16eJQ.jpg",
+  "photos": [
+    "brandon-hoogenboom-SNxQGWxZQi0.jpg",
+    "cameron-venti-R64qgQ6rr_o.jpg",
+    "claire-rendall-b6kAwr1i0Iw.jpg",
+    "ducminh-nguyen-hG3H6N6VwCY.jpg"
+  ],
+  "isPremium": true,
+  "offerType": "apartment",
+  "roomsCount": 2,
+  "guestsCount": 6,
+  "price": 75161,
+  "features": ["Washer,Towels,Fridge"],
+  "userId": "63597a7e95a2767ad5fdc1ac",
+  "address": {
+    "latitude": 40.88414,
+    "longitude": 142.793509
+  }
+}
+
+###
+
+## Удаление объявления
+
+DELETE http://localhost:4000/offers/635b84a80186cf25d25ba0cf HTTP/1.1
+
+###
+
+## Обновление объявления
+
+PATCH http://localhost:4000/offers/635b83cbfe54ed827b3ea692 HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "Небольшая лавочка в парке!!!",
+  "description": "Тут красиво, светло и уютно. Есть где разместиться компании из 5 человек. Кофе и печеньки бесплатно.",
+  "price": 1100
+}

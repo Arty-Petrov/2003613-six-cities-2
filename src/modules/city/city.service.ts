@@ -1,11 +1,12 @@
 import { DocumentType, types } from '@typegoose/typegoose';
-import { inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { LoggerInterface } from '../../common/logger/logger.interface.js';
 import { Component } from '../../types/component.types.js';
 import { CityServiceInterface } from './city-service.interface.js';
 import { CityEntity } from './city.entity.js';
 import CreateCityDto from './dto/create-city.dto.js';
 
+@injectable()
 export default class CityService implements CityServiceInterface{
   constructor(
     @inject(Component.LoggerInterface) private readonly logger: LoggerInterface,
@@ -14,7 +15,7 @@ export default class CityService implements CityServiceInterface{
 
   public async create(dto: CreateCityDto): Promise<DocumentType<CityEntity>> {
     const city = await this.cityModel.create(dto);
-    this.logger.info(`The city ${dto.cityName} is created`);
+    this.logger.info(`The city ${dto.name} is created`);
 
     return city;
   }
@@ -24,7 +25,7 @@ export default class CityService implements CityServiceInterface{
   }
 
   public async findOrCreate(dto: CreateCityDto): Promise<DocumentType<CityEntity>> {
-    const city = await this.findByName(dto.cityName);
+    const city = await this.findByName(dto.name);
     return city ? city : this.create(dto);
   }
 

@@ -1,4 +1,5 @@
 import typegoose, {getModelForClass, defaultClasses} from '@typegoose/typegoose';
+import { DEFAULT_LATITUDE, DEFAULT_LONGITUDE } from './city.const.js';
 
 const {prop, modelOptions} = typegoose;
 
@@ -13,7 +14,7 @@ export class CityEntity extends defaultClasses.TimeStamps {
   @prop({
     unique: true,
     required: true })
-  public cityName!: string;
+  public name!: string;
 
   @prop({
     required: true,

@@ -1,13 +1,13 @@
-import { City } from '../const/city.enum.js';
-import { Features } from '../const/features.enum.js';
-import { OfferType } from '../const/offer-type.enum.js';
+import { City } from './city.enum.js';
+import { Features } from './features.enum.js';
+import { OfferType } from './offer-type.enum.js';
 import { Address } from './address.type.js';
 import { User } from './user.type.js';
 
 
 export type Offer = {
   title: string;
-  offerDescription: string;
+  description: string;
   postDate: Date;
   city: City;
   preview: string;
