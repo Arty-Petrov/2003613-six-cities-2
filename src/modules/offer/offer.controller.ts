@@ -27,7 +27,7 @@ export default class OfferController extends Controller {
     super(logger);
 
     this.logger.info('Register routes for OfferController…');
-    this.addRoute({path: '/', method: HttpMethod.Get, handler: this.getOffers});
+    this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
     this.addRoute({path: '/:offerId', method: HttpMethod.Get, handler: this.getOfferById});
     this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
     this.addRoute({path: '/:offerId', method: HttpMethod.Delete, handler: this.delete});
@@ -53,10 +53,8 @@ export default class OfferController extends Controller {
     this.ok(res, fillDTO(OfferFullResponse, offer));
   }
 
-  public async getOffers(req: Request, res: Response) {
-    const {count} = req.query as { count: string };
-    this.logger.info(`Передано ${JSON.stringify(req.query)}`);
-    const offersList = await this.offerService.find(Number(count));
+  public async index({query}: Request, res: Response) {
+    const offersList = await this.offerService.find(Number(query.limit));
     if (!offersList) {
       throw new Error('Failed to get offers');
     }

@@ -12,6 +12,7 @@ import ExceptionFilter from './common/errors/exception-filter.js';
 import { LoggerInterface } from './common/logger/logger.interface.js';
 import LoggerService from './common/logger/logger.service.js';
 import { CityServiceInterface } from './modules/city/city-service.interface.js';
+import CityController from './modules/city/city.controller.js';
 import { CityEntity, CityModel } from './modules/city/city.entity.js';
 import CityService from './modules/city/city.service.js';
 import { CommentServiceInterface } from './modules/comment/comment-service.interface.js';
@@ -43,6 +44,7 @@ applicationContainer.bind<types.ModelType<CityEntity>>(Component.CityModel).toCo
 
 applicationContainer.bind<ControllerInterface>(Component.UserController).to(UserController).inSingletonScope();
 applicationContainer.bind<ControllerInterface>(Component.OfferController).to(OfferController).inSingletonScope();
+applicationContainer.bind<ControllerInterface>(Component.CityController).to(CityController).inSingletonScope();
 applicationContainer.bind<ExceptionFilterInterface>(Component.ExceptionFilterInterface).to(ExceptionFilter).inSingletonScope();
 
 const application = applicationContainer.get<Application>(Component.Application);

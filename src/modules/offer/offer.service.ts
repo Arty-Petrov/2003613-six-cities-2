@@ -1,7 +1,6 @@
 import { DocumentType, types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
 import { LoggerInterface } from '../../common/logger/logger.interface.js';
-import { City } from '../../types/city.enum.js';
 import { Component } from '../../types/component.types.js';
 import { SortType } from '../../types/sort-type.enum.js';
 import CreateOfferDto from './dto/create-offer.dto.js';
@@ -44,7 +43,7 @@ export default class OfferService implements OfferServiceInterface {
         {
           $addToSet: {inFavorites: userId,}
         })
-      .populate(['userId', 'features'])
+      .populate(['userId', 'features', 'cityId'])
       .exec();
   }
 
@@ -54,33 +53,33 @@ export default class OfferService implements OfferServiceInterface {
         {
           $pull: {inFavorites: userId,}
         })
-      .populate(['userId', 'features'])
+      .populate(['userId', 'features', 'cityId'])
       .exec();
   }
 
-  public async find(count: number): Promise<DocumentType<OfferEntity>[]> {
-    this.logger.info(`${count} ${DEFAULT_OFFERS_COUNT}`);
+  public async find(limit: number): Promise<DocumentType<OfferEntity>[]> {
+    this.logger.info(`${limit} ${DEFAULT_OFFERS_COUNT}`);
     return this.offerModel
       .find()
-      .limit(count || DEFAULT_OFFERS_COUNT)
+      .limit(limit || DEFAULT_OFFERS_COUNT)
       .sort({postDate: SortType.Down})
-      .populate(['userId', 'features'])
+      .populate(['userId', 'features', 'cityId'])
       .exec();
   }
 
   public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findById(offerId)
-      .populate(['userId', 'features'])
+      .populate(['userId', 'features', 'cityId'])
       .exec();
   }
 
-  public async findPremiumByCity(city: City): Promise<DocumentType<OfferEntity>[]> {
+  public async findPremiumByCityId(cityId: string, limit?: number): Promise<DocumentType<OfferEntity>[]> {
     return this.offerModel
-      .find({city: city})
+      .find({cityId: cityId})
       .sort({postDate: SortType.Down})
-      .limit(PREMIUM_OFFERS_COUNT)
-      .populate(['hostId', 'features'])
+      .limit(limit || PREMIUM_OFFERS_COUNT)
+      .populate(['userId', 'features', 'cityId'])
       .exec();
   }
 

@@ -13,6 +13,12 @@ export default class CityService implements CityServiceInterface{
     @inject(Component.CityModel) private readonly cityModel: types.ModelType<CityEntity>
   ) {}
 
+  public async find(): Promise<DocumentType<CityEntity>[]> {
+    return this.cityModel
+      .find()
+      .exec();
+  }
+
   public async create(dto: CreateCityDto): Promise<DocumentType<CityEntity>> {
     const city = await this.cityModel.create(dto);
     this.logger.info(`The city ${dto.name} is created`);
