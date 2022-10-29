@@ -1,5 +1,5 @@
+//TODO Возможно стоит убрать city.controller и его путь из route
 import { Request, Response } from 'express';
-import * as core from 'express-serve-static-core';
 import { StatusCodes } from 'http-status-codes';
 import { inject, injectable } from 'inversify';
 import { Controller } from '../../common/controller/controller.js';
@@ -7,24 +7,16 @@ import HttpError from '../../common/errors/http-error.js';
 import { LoggerInterface } from '../../common/logger/logger.interface.js';
 import { Component } from '../../types/component.types.js';
 import { HttpMethod } from '../../types/http-method.enum.js';
-import { RequestQuery } from '../../types/request-query.type.js';
 import { fillDTO } from '../../utils/common.js';
-import { OfferServiceInterface } from '../offer/offer-service.interface.js';
-import OfferShortResponse from '../offer/response/offer-short.response.js';
 import { CityServiceInterface } from './city-service.interface.js';
 import CreateCityDto from './dto/create-city.dto.js';
 import CityResponse from './response/city.response.js';
-
-type ParamsGetCity = {
-  cityId: string;
-}
 
 @injectable()
 export default class CityController extends Controller {
   constructor(
     @inject(Component.LoggerInterface) logger: LoggerInterface,
     @inject(Component.CityServiceInterface) private readonly cityService: CityServiceInterface,
-    @inject(Component.OfferServiceInterface) private readonly offerService: OfferServiceInterface
   ) {
     super(logger);
 
@@ -32,7 +24,6 @@ export default class CityController extends Controller {
 
     this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
     this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
-    this.addRoute({path: '/:cityId/offers', method: HttpMethod.Get, handler: this.getPremiumOffersInCity});
   }
 
   public async index(_req: Request, res: Response): Promise<void> {
@@ -58,14 +49,5 @@ export default class CityController extends Controller {
       res,
       fillDTO(CityResponse, result)
     );
-  }
-
-  public async getPremiumOffersInCity(
-    {params, query}: Request<core.ParamsDictionary | ParamsGetCity, unknown, unknown, RequestQuery>,
-    res: Response
-  ):Promise<void> {
-    const limit = Number(query.limit)?? 0;
-    const offers = await this.offerService.findPremiumByCityId(params.cityId, limit);
-    this.ok(res, fillDTO(OfferShortResponse, offers));
   }
 }

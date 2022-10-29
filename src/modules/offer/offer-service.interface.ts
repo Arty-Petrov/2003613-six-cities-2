@@ -11,7 +11,7 @@ export interface OfferServiceInterface {
   removeFromFavorites(offerId: string, userId: string): Promise<DocumentType<OfferEntity> | null>
   find(limit: number): Promise<DocumentType<OfferEntity>[]>;
   findById(offerId: string): Promise<DocumentType<OfferEntity> | null>;
-  findPremiumByCityId(cityId: string, limit: number): Promise<DocumentType<OfferEntity>[]>;
+  findPremiumByCityId(cityId: string): Promise<DocumentType<OfferEntity>[]>;
   updateCommentsCountAndRating(offerId: string, rating: number, commentsCount: number): Promise<DocumentType<OfferEntity> | null>;
   exists(documentId: string): Promise<boolean>;
 }

@@ -112,9 +112,13 @@ Content-Type: application/json
 
 ## Список премиальных объявлений в городе
 
-GET http://localhost:4000/cities/635bc7fc426b0cf925300c29/offers HTTP/1.1
+GET http://localhost:4000/offers/635bc7fc426b0cf925300c29/city HTTP/1.1
 
-###?limit=10
+###
+## Список комментариев к объявлению
+GET http://localhost:4000/comments/635bf92bc0711f773551cd46 HTTP/1.1
+
+###
 
 ## Создать комментарий
 POST http://localhost:4000/comments HTTP/1.1

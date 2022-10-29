@@ -7,6 +7,7 @@ import HttpError from '../../common/errors/http-error.js';
 import { LoggerInterface } from '../../common/logger/logger.interface.js';
 import { Component } from '../../types/component.types.js';
 import { HttpMethod } from '../../types/http-method.enum.js';
+import { RequestQuery } from '../../types/request-query.type.js';
 import { fillDTO } from '../../utils/common.js';
 import CreateOfferDto from './dto/create-offer.dto.js';
 import UpdateOfferDto from './dto/update-offer.dto.js';
@@ -16,6 +17,10 @@ import OfferShortResponse from './response/offer-short.response.js';
 
 type ParamsGetOffer = {
   offerId: string;
+}
+
+type ParamsGetCity = {
+  cityId: string;
 }
 
 @injectable()
@@ -28,10 +33,11 @@ export default class OfferController extends Controller {
 
     this.logger.info('Register routes for OfferController…');
     this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
-    this.addRoute({path: '/:offerId', method: HttpMethod.Get, handler: this.getOfferById});
     this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
+    this.addRoute({path: '/:offerId', method: HttpMethod.Get, handler: this.getOfferById});
     this.addRoute({path: '/:offerId', method: HttpMethod.Delete, handler: this.delete});
     this.addRoute({path: '/:offerId', method: HttpMethod.Patch, handler: this.update});
+    this.addRoute({path: '/:cityId/premium', method: HttpMethod.Get, handler: this.getPremiumOffersInCity,});
   }
 
   public async getOfferById(
@@ -104,5 +110,13 @@ export default class OfferController extends Controller {
     }
 
     this.ok(res, fillDTO(OfferFullResponse, updatedOffer));
+  }
+
+  public async getPremiumOffersInCity(
+    {params}: Request<core.ParamsDictionary | ParamsGetCity, unknown, unknown, RequestQuery>,
+    res: Response
+  ):Promise<void> {
+    const offers = await this.offerService.findPremiumByCityId(params.cityId);
+    this.ok(res, fillDTO(OfferShortResponse, offers));
   }
 }

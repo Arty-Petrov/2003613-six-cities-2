@@ -27,7 +27,7 @@ export default class Application {
   }
 
   public initRoutes() {
-    this.expressApp.use('/cities', this.cityController.router);
+    this.expressApp.use('/premium', this.cityController.router);
     this.expressApp.use('/users', this.userController.router);
     this.expressApp.use('/offers', this.offerController.router);
     this.expressApp.use('/comments', this.commentController.router);
