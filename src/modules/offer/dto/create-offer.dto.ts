@@ -9,26 +9,29 @@ import {
   IsInt,
   IsMongoId,
   IsNotEmptyObject,
+  Length,
   Matches,
   Max,
-  MaxLength,
   Min,
-  MinLength,
 } from 'class-validator';
 import { OfferDescriptionLength, OfferGuestsCount, OfferPriceValue, OfferTitleLength } from '../../../const/index.js';
-import OfferPreviewCount from '../../../const/offer-preview-count.const.js';
+import OfferPhotosCount from '../../../const/offer-photos-count.const.js';
 import RoomsCountConst from '../../../const/offer-rooms-count.const.js';
 import { Address } from '../../../types/address.type.js';
 import { Features } from '../../../types/features.enum.js';
 import { OfferType } from '../../../types/offer-type.enum.js';
 
 export default class CreateOfferDto {
-  @MinLength(OfferTitleLength.Min, {message: `Maximum title length must be ${OfferTitleLength.Min}`})
-  @MaxLength(OfferTitleLength.Max, {message: `Maximum title length must be ${OfferTitleLength.Max}`})
+  @Length(OfferTitleLength.Min, OfferTitleLength.Max,
+    {
+      message: `Title min length is  ${OfferTitleLength.Min}, max is ${OfferTitleLength.Max}`
+    })
   public title!: string;
 
-  @MinLength(OfferDescriptionLength.Min, {message: `Maximum description length must be ${OfferDescriptionLength.Min}`})
-  @MaxLength(OfferDescriptionLength.Max, {message: `Maximum description length must be ${OfferDescriptionLength.Max}`})
+  @Length(OfferDescriptionLength.Min, OfferDescriptionLength.Max,
+    {
+      message: `Description min length is ${OfferDescriptionLength.Min}, max is ${OfferDescriptionLength.Max}`
+    })
   public description!: string;
 
   @IsDateString({}, {message: 'Offer date must be valid ISO date'})
@@ -37,12 +40,12 @@ export default class CreateOfferDto {
   @IsMongoId({each: true, message: 'City field must be a valid cityId'})
   public cityId!: string;
 
-  @MaxLength(256, {message: 'Too short for field «preview»'})
-  @ArrayMinSize(OfferPreviewCount.Strict, {message: `Should be ${OfferPreviewCount.Strict} images`})
-  @ArrayMaxSize(OfferPreviewCount.Strict, {message: `Should be ${OfferPreviewCount.Strict} images`})
+  @Matches(/[\w/-]+.(jpg|png)/, { message: 'Preview image must be jpg or png' })
   public preview!: string;
 
   @IsArray({message: 'Photos must be an array'})
+  @ArrayMinSize(OfferPhotosCount.Strict, {message: `Should be ${OfferPhotosCount.Strict} images`})
+  @ArrayMaxSize(OfferPhotosCount.Strict, {message: `Should be ${OfferPhotosCount.Strict} images`})
   @Matches(/[\w/-]+.(jpg|png)/, { each: true, message: 'All photos must be jpg or png' })
   public photos!: string[];
 
@@ -69,10 +72,13 @@ export default class CreateOfferDto {
 
   @IsArray({message: 'Features must be an array'})
   @ArrayNotEmpty()
-  @IsEnum(Features, {each: true, message: `Offer features list must contains any of these values: ${Object.values(Features).join(', ')}`})
+  @IsEnum(Features,
+    {
+      each: true,
+      message: `Offer features list must contains any of these values: ${Object.values(Features).join(', ')}`})
   public features!: string[];
 
-  @IsMongoId({each: true, message: 'User field must be a string with valid userId'})
+  @IsMongoId({each: true, message: 'The field must be a string with valid userId'})
   public userId!: string;
 
   @IsNotEmptyObject()

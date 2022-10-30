@@ -26,8 +26,17 @@ export default class CommentController extends Controller {
     super(logger);
 
     this.logger.info('Register routes for CommentController…');
-    this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
-    this.addRoute({path: '/:offerId', method: HttpMethod.Get, handler: this.getComments});
+    this.addRoute({
+      path: '/',
+      method: HttpMethod.Post,
+      handler: this.create,
+      middlewares: [],
+    });
+    this.addRoute({
+      path: '/:offerId',
+      method: HttpMethod.Get,
+      handler: this.getComments,
+    });
   }
 
   public async create(
@@ -46,7 +55,6 @@ export default class CommentController extends Controller {
     const comment = await this.commentService.create(body);
     const offerRatingUpdate = await this.commentService.calcRatingsByOfferId(body.offerId);
     const {offerRating, commentsCount} = offerRatingUpdate;
-    await this.logger.info(`${JSON.stringify(offerRatingUpdate)}`);
     await this.offerService.updateCommentsCountAndRating(body.offerId, offerRating, commentsCount);
     this.created(res, fillDTO(CommentResponse, comment));
   }

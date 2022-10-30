@@ -3,7 +3,7 @@ import DatabaseService from '../common/database-client/database.service.js';
 import TSVFileReader from '../common/file-reader/tsv-file-reader.js';
 import ConsoleLoggerService from '../common/logger/console-logger.service.js';
 import { LoggerInterface } from '../common/logger/logger.interface.js';
-import { Cities } from '../const/cities.const.js';
+import { Cities } from '../const/index.js';
 import { CityServiceInterface } from '../modules/city/city-service.interface.js';
 import { CityModel } from '../modules/city/city.entity.js';
 import CityService from '../modules/city/city.service.js';
