@@ -1,6 +1,6 @@
 import { City }  from '../types/city.enum.js';
 
-export const Cities = {
+const Cities = {
   [City.Paris]: {
     latitude: 48.85661,
     longitude: 2.351499,
@@ -25,4 +25,6 @@ export const Cities = {
     latitude: 51.225402,
     longitude: 6.776314
   },
-};
+} as const;
+
+export default Cities;

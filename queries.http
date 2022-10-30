@@ -81,8 +81,8 @@ Content-Type: application/json
   "offerType": "apartment",
   "roomsCount": 2,
   "guestsCount": 6,
-  "price": 75161,
-  "features": ["Washer,Towels,Fridge"],
+  "price": 100000,
+  "features": ["Washer","Towels","Fridge"],
   "userId": "63597a7e95a2767ad5fdc1ac",
   "address": {
     "latitude": 40.88414,
@@ -100,13 +100,13 @@ DELETE http://localhost:4000/offers/635b84a80186cf25d25ba0cf HTTP/1.1
 
 ## Обновление объявления
 
-PATCH http://localhost:4000/offers/635b83cbfe54ed827b3ea692 HTTP/1.1
+PATCH http://localhost:4000/offers/635bf92bc0711f773551cd42 HTTP/1.1
 Content-Type: application/json
 
 {
   "title": "Небольшая лавочка в парке!!!",
   "description": "Тут красиво, светло и уютно. Есть где разместиться компании из 5 человек. Кофе и печеньки бесплатно.",
-  "price": 1100
+  "price": 110000
 }
 ###
 
