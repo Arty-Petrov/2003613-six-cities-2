@@ -78,7 +78,6 @@ export default class CreateOfferDto {
       message: `Offer features list must contains any of these values: ${Object.values(Features).join(', ')}`})
   public features!: string[];
 
-  @IsMongoId({each: true, message: 'The field must be a string with valid userId'})
   public userId!: string;
 
   @IsNotEmptyObject()

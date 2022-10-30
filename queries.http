@@ -31,9 +31,15 @@ Content-Type: application/json
   "name": "Jack",
   "email": "torans@overlook.net",
   "avatarUrl": "torrance.png",
-  "isPro": "true",
+  "isPro": true,
   "password": "shining"
 }
+###
+
+## Проверка токена пользователя
+GET http://localhost:4000/users/login HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuc0BvdmVybG9vay5uZXQiLCJpZCI6IjYzNWVjZDgyNTVhNzBmYTFiOWQwZjAwNCIsImlhdCI6MTY2NzE1NzU0MywiZXhwIjoxNjY3MzMwMzQzfQ.WnwhngnkwWWgYppxwg-FnZPRdzkFIgf94ahrRLpQm3U
+
 ###
 
 ## Вход в закрытую часть приложения

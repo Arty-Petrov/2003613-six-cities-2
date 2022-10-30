@@ -1,7 +1,7 @@
 import { Expose, Type } from 'class-transformer';
 import CityResponse from '../../city/response/city.response.js';
 import FeatureResponse from '../../feature/response/feature.response.js';
-import UserResponse from '../../user/response/user.response.js';
+import LoggedUserResponse from '../../user/response/logged-user.response.js';
 
 export default class OfferFullResponse {
   @Expose()
@@ -49,8 +49,8 @@ export default class OfferFullResponse {
   public features!: FeatureResponse;
 
   @Expose({ name: 'userId'})
-  @Type(() => UserResponse)
-  public user!: UserResponse;
+  @Type(() => LoggedUserResponse)
+  public user!: LoggedUserResponse;
 
   @Expose()
   public commentsCount!: number;

@@ -5,6 +5,8 @@ import { inject } from 'inversify';
 import { Controller } from '../../common/controller/controller.js';
 import HttpError from '../../common/errors/http-error.js';
 import { LoggerInterface } from '../../common/logger/logger.interface.js';
+import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
+import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 import { Component } from '../../types/component.types.js';
 import { HttpMethod } from '../../types/http-method.enum.js';
 import { fillDTO } from '../../utils/common.js';
@@ -30,20 +32,26 @@ export default class CommentController extends Controller {
       path: '/',
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [],
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateDtoMiddleware(CreateCommentDto),
+      ],
     });
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.Get,
       handler: this.getComments,
+      middlewares: [
+        new ValidateDtoMiddleware(CreateCommentDto),
+      ],
     });
   }
 
   public async create(
-    {body}: Request<object, object, CreateCommentDto>,
+    req: Request<object, object, CreateCommentDto>,
     res: Response
   ): Promise<void> {
-
+    const {body} = req;
     if (!await this.offerService.exists(body.offerId)) {
       throw new HttpError(
         StatusCodes.NOT_FOUND,
@@ -52,7 +60,7 @@ export default class CommentController extends Controller {
       );
     }
 
-    const comment = await this.commentService.create(body);
+    const comment = await this.commentService.create({...body, userId: req.user.id});
     const offerRatingUpdate = await this.commentService.calcRatingsByOfferId(body.offerId);
     const {offerRating, commentsCount} = offerRatingUpdate;
     await this.offerService.updateCommentsCountAndRating(body.offerId, offerRating, commentsCount);

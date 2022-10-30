@@ -1,6 +1,6 @@
 import {Expose} from 'class-transformer';
 
-export default class UserResponse {
+export default class LoggedUserResponse {
   @Expose()
   public email!: string ;
 
@@ -12,4 +12,7 @@ export default class UserResponse {
 
   @Expose()
   public isPro!: boolean;
+
+  @Expose()
+  public token!: string;
 }

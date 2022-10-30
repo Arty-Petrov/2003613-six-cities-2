@@ -10,11 +10,12 @@ import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.mid
 import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-objectId.middleware.js';
 import { Component } from '../../types/component.types.js';
 import { HttpMethod } from '../../types/http-method.enum.js';
-import { fillDTO } from '../../utils/common.js';
+import { createJWT, fillDTO } from '../../utils/common.js';
 import CreateUserDto from './dto/create-user.dto.js';
 import LoginUserDto from './dto/login-user.dto.js';
-import UserResponse from './response/user.response.js';
+import LoggedUserResponse from './response/logged-user.response.js';
 import { UserServiceInterface } from './user-service.interface.js';
+import { JWT_ALGORITHM } from './user.constant.js';
 
 @injectable()
 export default class UserController extends Controller {
@@ -30,19 +31,26 @@ export default class UserController extends Controller {
       path: '/register',
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [new ValidateDtoMiddleware(CreateUserDto)]
+      middlewares: [
+        new ValidateDtoMiddleware(CreateUserDto)
+      ]
     });
+
     this.addRoute({
       path: '/login',
       method: HttpMethod.Post,
       handler: this.login,
-      middlewares: [new ValidateDtoMiddleware(CreateUserDto)]
+      middlewares: [
+        new ValidateDtoMiddleware(LoginUserDto)
+      ]
     });
+
     this.addRoute({
       path: '/login',
       method: HttpMethod.Get,
-      handler: this.check,
+      handler: this.checkAuthentication,
     });
+
     this.addRoute({
       path: '/:userId/avatar',
       method: HttpMethod.Post,
@@ -72,50 +80,44 @@ export default class UserController extends Controller {
     this.send(
       res,
       StatusCodes.CREATED,
-      fillDTO(UserResponse, result)
+      fillDTO(LoggedUserResponse, result)
     );
   }
 
   public async login(
     {body}: Request<Record<string, unknown>, Record<string, unknown>, LoginUserDto>,
-    _res: Response,
+    res: Response,
   ): Promise<void> {
-    const existsUser = await this.userService.findByEmail(body.email);
+    const user = await this.userService.verifyUser(body, this.configService.get('SALT'));
 
-    if (!existsUser) {
+    if (! user) {
       throw new HttpError(
         StatusCodes.UNAUTHORIZED,
-        `User with email ${body.email} not found.`,
-        'UserController',
+        'Unauthorized',
+        'UserController'
       );
     }
 
-    throw new HttpError(
-      StatusCodes.NOT_IMPLEMENTED,
-      'Not implemented',
-      'UserController',
+    const token = await createJWT(
+      JWT_ALGORITHM,
+      this.configService.get('JWT_SECRET'),
+      { email: user.email, id: user.id}
     );
+    this.logger.info(`Authorization: Bearer: ${token}`);
+    this.ok(res, fillDTO(LoggedUserResponse, {email: user.email, token}));
   }
 
-  public async check(
-    {body}: Request<Record<string, unknown>, Record<string, unknown>, LoginUserDto>,
-    _res: Response,
-  ): Promise<void> {
-    const existsUser = await this.userService.findByEmail(body.email);
 
-    if (!existsUser) {
+  public async checkAuthentication(req: Request, res: Response) {
+    const user = await this.userService.findByEmail(req.user.email);
+
+    if (!user) {
       throw new HttpError(
         StatusCodes.UNAUTHORIZED,
-        `User with email ${body.email} is not authorized.`,
-        'UserController',
-      );
+        `User with email ${req.user.email} is not authorized.`,
+        'UserController');
     }
-
-    throw new HttpError(
-      StatusCodes.NOT_IMPLEMENTED,
-      'Not implemented',
-      'UserController',
-    );
+    this.ok(res, fillDTO(LoggedUserResponse, user));
   }
 
   public async uploadAvatar(req: Request, res: Response) {

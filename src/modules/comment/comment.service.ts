@@ -54,6 +54,7 @@ export default class CommentService implements CommentServiceInterface {
     this.commentModel
       .deleteMany({offerId})
       .exec();
+    this.logger.info(`Comments of offer with id ${offerId} was deleted`);
   }
 
   public async findByOfferId(offerId: string): Promise<DocumentType<CommentEntity>[] | null> {
