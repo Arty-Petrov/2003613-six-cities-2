@@ -8,12 +8,12 @@ import { Offer } from '../types/offer.type.js';
 
 export const createOffer = (row: string) => {
   const tokens = row.replace('\n', '').split('\t');
-  const [title, description, postDate, city,
-    preview, photos, isPremium, isFavorite,
-    rating, type, roomsCount, guestsCount, price,
-    features, name, email, avatarPath,
-    password, isPro, commentsCount, latitude,
-    longitude] = tokens;
+  const [
+    title, description, postDate, city, preview,
+    photos, isPremium, type, roomsCount, guestsCount,
+    price, features, name, email, avatarPath,
+    password, isPro, latitude, longitude,
+  ] = tokens;
   return {
     title,
     description: description,
@@ -22,8 +22,7 @@ export const createOffer = (row: string) => {
     preview,
     photos: photos.split(';'),
     isPremium: !!isPremium,
-    isFavorite: !!isFavorite,
-    rating: Number.parseFloat(rating),
+    rating: 0,
     offerType: type as OfferType,
     roomsCount: Number.parseInt(roomsCount,10),
     guestsCount: Number.parseInt(guestsCount,10),
@@ -36,12 +35,48 @@ export const createOffer = (row: string) => {
       password: password,
       isPro: !!isPro
     },
-    commentsCount: Number.parseInt(commentsCount,10),
+    commentsCount: 0,
     address: {
       latitude: Number.parseFloat(latitude),
       longitude: Number.parseFloat(longitude)
     },
   } as Offer;
+};
+
+export const createComment = (row: string) => {
+  const tokens = row.replace('\n', '').split('\t');
+  const [
+    text, rating,
+  ] = tokens;
+  return {
+    text: text,
+    rating: Number.parseInt(rating,10),
+  };
+};
+
+export const createCity = (row: string) => {
+  const tokens = row.replace('\n', '').split('\t');
+  const [
+    name, latitude, longitude,
+  ] = tokens;
+  return {
+    name: name,
+    latitude: Number.parseFloat(latitude),
+    longitude: Number.parseFloat(longitude),
+  };
+};
+
+export const createUser = (row: string) => {
+  const tokens = row.replace('\n', '').split('\t');
+  const [
+    name, email, avatarUrl, isPro,
+  ] = tokens;
+  return {
+    name: name,
+    email: email,
+    avatarUrl: avatarUrl,
+    isPro: Boolean(isPro),
+  };
 };
 
 export const getErrorMessage = (error: unknown): string =>
@@ -59,9 +94,9 @@ export const createErrorObject = (message: string) => ({
   error: message,
 });
 
-export const createJWT = async (algoritm: string, jwtSecret: string, payload: object): Promise<string> =>
+export const createJWT = async (algorithm: string, jwtSecret: string, payload: object): Promise<string> =>
   new jose.SignJWT({...payload})
-    .setProtectedHeader({ alg: algoritm})
+    .setProtectedHeader({ alg: algorithm})
     .setIssuedAt()
     .setExpirationTime('2d')
     .sign(crypto.createSecretKey(jwtSecret, 'utf-8'));

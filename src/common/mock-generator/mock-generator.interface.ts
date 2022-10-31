@@ -1,3 +1,3 @@
-export interface OfferGeneratorInterface {
+export interface MockGeneratorInterface {
   generate(): string;
 }

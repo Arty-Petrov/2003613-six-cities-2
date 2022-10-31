@@ -1,12 +1,12 @@
 import { DocumentType, types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
 import { LoggerInterface } from '../../common/logger/logger.interface.js';
+import { OffersListCount, PremiumOffersListCount } from '../../const/index.js';
 import { Component } from '../../types/component.types.js';
 import { SortType } from '../../types/sort-type.enum.js';
 import CreateOfferDto from './dto/create-offer.dto.js';
 import UpdateOfferDto from './dto/update-offer.dto.js';
 import { OfferServiceInterface } from './offer-service.interface.js';
-import { DEFAULT_OFFERS_COUNT, PREMIUM_OFFERS_COUNT } from './offer.const.js';
 import { OfferEntity } from './offer.entity.js';
 
 
@@ -58,27 +58,26 @@ export default class OfferService implements OfferServiceInterface {
   }
 
   public async find(limit: number): Promise<DocumentType<OfferEntity>[]> {
-    this.logger.info(`${limit} ${DEFAULT_OFFERS_COUNT}`);
     return this.offerModel
       .find()
-      .limit(limit || DEFAULT_OFFERS_COUNT)
+      .limit(limit || OffersListCount.Default)
       .sort({postDate: SortType.Down})
       .populate(['userId', 'features', 'cityId'])
       .exec();
   }
 
-  public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
+  public async show(offerId: string): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findById(offerId)
       .populate(['userId', 'features', 'cityId'])
       .exec();
   }
 
-  public async findPremiumByCityId(cityId: string, limit?: number): Promise<DocumentType<OfferEntity>[]> {
+  public async findPremiumByCityId(cityId: string): Promise<DocumentType<OfferEntity>[]> {
     return this.offerModel
       .find({cityId: cityId})
       .sort({postDate: SortType.Down})
-      .limit(limit || PREMIUM_OFFERS_COUNT)
+      .limit(PremiumOffersListCount.Strict)
       .populate(['userId', 'features', 'cityId'])
       .exec();
   }

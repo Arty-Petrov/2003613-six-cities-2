@@ -1,3 +1,4 @@
+export { default as MockPaths } from './mock-paths.const.js';
 export { default as Cities } from './cities.const.js';
 export { default as CommentsListCount } from './comments-list-count.const.js';
 export { default as CommentRatingValue } from './comment-rating-value.const.js';

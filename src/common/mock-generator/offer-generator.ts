@@ -7,9 +7,9 @@ import {
   generateRandomValue,
   generateRandomDate,
   getRandomItem,
-  getRandomItems, generatePassword,
+  getRandomItems
 } from '../../utils/random.js';
-import {OfferGeneratorInterface} from './offer-generator.interface.js';
+import {MockGeneratorInterface} from './mock-generator.interface.js';
 
 const MIN_DATE = '20220801';
 const MAX_DATE = '20220901';
@@ -18,7 +18,7 @@ const MAX_LAT = 43;
 const MIN_LNG = 139;
 const MAX_LNG = 143;
 
-export default class OfferGenerator implements OfferGeneratorInterface {
+export default class OfferGenerator implements MockGeneratorInterface {
   constructor(private readonly mockData: MockData) {}
 
   public generate(): string {
@@ -34,10 +34,7 @@ export default class OfferGenerator implements OfferGeneratorInterface {
     const guestsCount = generateRandomValue(OfferGuestsCount.Max, OfferGuestsCount.Max).toString();
     const price = generateRandomValue(OfferPriceValue.Min, OfferPriceValue.Max).toString();
     const features = getRandomItems<string>(Array.from(Object.values(Features)));
-    const name = getRandomItem<string>(this.mockData.userNames);
-    const email = getRandomItem<string>(this.mockData.emails);
-    const avatarPath = getRandomItem<string>(this.mockData.avatars);
-    const password = generatePassword();
+    const host = getRandomItem<string>(this.mockData.emails);
     const isPro = !!generateRandomValue(0,1);
     const commentsCount = 0;
     const latitude = generateRandomValue(MIN_LAT, MAX_LAT, LocationValue.Decimal).toString();
@@ -46,8 +43,7 @@ export default class OfferGenerator implements OfferGeneratorInterface {
     return [
       title, description, postDate, city, preview,
       photos, isPremium, type, roomsCount, guestsCount,
-      price, features, name, email, avatarPath,
-      password, isPro, commentsCount, latitude, longitude
-    ].join('\t');
+      price, features, host, isPro, commentsCount,
+      latitude, longitude].join('\t');
   }
 }

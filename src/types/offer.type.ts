@@ -11,10 +11,9 @@ export type Offer = {
   postDate: Date;
   city: City;
   preview: string;
-  photos: string[]; //Список ссылок на фотографии жилья. Всегда 6 фотографий;
+  photos: string[];
   isPremium: boolean;
-  isFavorite: boolean;
-  rating: number; //Обязательное. Число от 1 до 5. Допускаются числа с запятой (1 знак после запятой);
+  rating: number;
   offerType: OfferType;
   roomsCount: number;
   guestsCount: number;

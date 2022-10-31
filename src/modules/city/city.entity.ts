@@ -17,12 +17,10 @@ export class CityEntity extends defaultClasses.TimeStamps {
   public name!: string;
 
   @prop({
-    required: true,
     default: DEFAULT_LATITUDE })
   public latitude?: number;
 
   @prop({
-    required: true,
     default: DEFAULT_LONGITUDE })
   public longitude?: number;
 }

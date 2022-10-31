@@ -1,5 +1,5 @@
 const enum PremiumOffersListCount {
-  Max = 3,
+  Strict = 3,
 }
 
 export default PremiumOffersListCount;

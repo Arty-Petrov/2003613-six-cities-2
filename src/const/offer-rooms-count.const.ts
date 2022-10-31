@@ -1,6 +1,6 @@
 const enum OfferRoomsCount{
   Min = 1,
-  Max = 15,
+  Max = 8,
 }
 
 export default OfferRoomsCount;

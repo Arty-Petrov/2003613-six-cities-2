@@ -98,7 +98,7 @@ export default class OfferController extends Controller {
   ): Promise<void> {
     const {offerId} = params;
     this.logger.info(offerId);
-    const offer = await this.offerService.findById(offerId);
+    const offer = await this.offerService.show(offerId);
     this.ok(res, fillDTO(OfferFullResponse, offer));
   }
 
@@ -116,7 +116,7 @@ export default class OfferController extends Controller {
   ): Promise<void> {
     const {body, user} = req;
     const result = await this.offerService.create({...body, userId: user.id});
-    const offer = await this.offerService.findById(result.id);
+    const offer = await this.offerService.show(result.id);
     this.created(res, fillDTO(OfferFullResponse, offer));
   }
 

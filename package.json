@@ -17,7 +17,9 @@
     "clean": "rimraf dist",
     "ts": "ts-node",
     "tsd": "ts-node --inspect",
-    "mock:server": "json-server ./mocks/mock-server-data.json --port 3123"
+    "mock:server": "json-server ./mocks/mock-server-data.json --port 3123",
+    "import": "npm run ts ./src/cli.ts -- --import ./mocks/ admin test 127.0.0.1 course-nodejs-restapi secret",
+    "generate": "npm run ts ./src/cli.ts -- --generate 20 ./mocks/ http://localhost:3123/api"
   },
   "devDependencies": {
     "@types/convict": "^6.1.1",
