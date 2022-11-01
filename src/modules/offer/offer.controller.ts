@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import * as core from 'express-serve-static-core';
+import { StatusCodes } from 'http-status-codes';
 import { inject, injectable } from 'inversify';
 import { Controller } from '../../common/controller/controller.js';
+import HttpError from '../../common/errors/http-error.js';
 import { LoggerInterface } from '../../common/logger/logger.interface.js';
 import { DocumentExistsMiddleware } from '../../common/middlewares/document-exists.middleware.js';
 import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
@@ -84,9 +86,8 @@ export default class OfferController extends Controller {
     this.addRoute({
       path: '/:cityId/premium',
       method: HttpMethod.Get,
-      handler: this.getPremiumOffersInCity,
+      handler: this.getPremiums,
       middlewares: [
-        new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.cityService, 'City', 'cityId'),
       ],
     });
@@ -121,28 +122,48 @@ export default class OfferController extends Controller {
   }
 
   public async delete(
-    {params}: Request<Record<string, unknown>>,
+    {user, params}: Request<Record<string, string>, Record<string, unknown>>,
     res: Response
   ): Promise<void> {
+    const {email} = user;
     const {offerId} = params;
+
+    this.checkOfferOwnership(offerId, email);
+
     const offer = await this.offerService.deleteById(offerId as string);
     this.noContent(res, offer);
   }
 
   public async update(
-    {body, params}: Request<Record<string, unknown>, Record<string, unknown>, UpdateOfferDto>,
+    {user, body, params}: Request<Record<string, string>, Record<string, unknown>, Record<string, unknown>, UpdateOfferDto>,
     res: Response
   ): Promise<void> {
+    const {email} = user;
     const {offerId} = params;
-    const updatedOffer = await this.offerService.updateById(offerId as string, body);
+
+    this.checkOfferOwnership(offerId, email);
+
+    const updatedOffer = await this.offerService.updateById(offerId, body);
     this.ok(res, fillDTO(OfferFullResponse, updatedOffer));
   }
 
-  public async getPremiumOffersInCity(
+  public async getPremiums(
     {params}: Request<core.ParamsDictionary | ParamsGetCity, unknown, unknown, RequestQuery>,
     res: Response
   ):Promise<void> {
-    const offers = await this.offerService.findPremiumByCityId(params.cityId);
+    const offers = await this.offerService.findPremiums(params.cityId);
     this.ok(res, fillDTO(OfferShortResponse, offers));
+  }
+
+  private async checkOfferOwnership(offerId: string, userEmail: string): Promise<void> {
+    const offerUserEmail = fillDTO(OfferFullResponse, await this.offerService.show(offerId)).user.email;
+
+    if (offerUserEmail !== userEmail) {
+      throw new HttpError(
+        StatusCodes.UNAUTHORIZED,
+        `User with email ${userEmail} is not authorized to change offer ${offerId}.`,
+        'OfferController');
+      return;
+    }
   }
 }

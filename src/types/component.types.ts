@@ -23,9 +23,6 @@ export const Component = {
 
   CityServiceInterface: Symbol.for('CityServiceInterface'),
   CityModel: Symbol.for('CityModel'),
-  CityController: Symbol.for('CityController'),
 
-  FeatureServiceInterface: Symbol.for('FeatureServiceInterface'),
-  FeatureModel: Symbol.for('FeatureModel'),
-  FeatureController: Symbol.for('FeatureController'),
+  FavoriteController: Symbol.for('FavoriteController'),
 } as const;

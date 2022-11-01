@@ -73,13 +73,22 @@ export default class OfferService implements OfferServiceInterface {
       .exec();
   }
 
-  public async findPremiumByCityId(cityId: string): Promise<DocumentType<OfferEntity>[]> {
+  public async findPremiums(cityId: string): Promise<DocumentType<OfferEntity>[]> {
     return this.offerModel
       .find({cityId: cityId})
       .sort({postDate: SortType.Down})
       .limit(PremiumOffersListCount.Strict)
       .populate(['userId', 'features', 'cityId'])
       .exec();
+  }
+
+  public async findFavorites(favorites: string[]): Promise<DocumentType<OfferEntity>[]> {
+    if (favorites.length) {
+      return this.offerModel
+        .find({_id: {$in: favorites}})
+        .exec();
+    }
+    return [];
   }
 
   public async updateCommentsCountAndRating(

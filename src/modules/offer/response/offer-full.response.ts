@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
+import { Features } from '../../../types/features.enum.js';
 import CityResponse from '../../city/response/city.response.js';
-import FeatureResponse from '../../feature/response/feature.response.js';
 import LoggedUserResponse from '../../user/response/logged-user.response.js';
 
 export default class OfferFullResponse {
@@ -45,8 +45,7 @@ export default class OfferFullResponse {
   public price!: number;
 
   @Expose()
-  @Type(() => FeatureResponse)
-  public features!: FeatureResponse;
+  public features!: Features;
 
   @Expose({ name: 'userId'})
   @Type(() => LoggedUserResponse)

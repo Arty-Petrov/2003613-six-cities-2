@@ -19,19 +19,19 @@ export default class Application {
     @inject(Component.ConfigInterface) private config: ConfigInterface,
     @inject(Component.DatabaseInterface) private databaseClient: DatabaseInterface,
     @inject(Component.ExceptionFilterInterface) private exceptionFilter: ExceptionFilterInterface,
-    @inject(Component.CityController) private cityController: ControllerInterface,
     @inject(Component.UserController) private userController: ControllerInterface,
     @inject(Component.OfferController) private offerController: ControllerInterface,
     @inject(Component.CommentController) private commentController: ControllerInterface,
+    @inject(Component.FavoriteController) private favoriteController: ControllerInterface,
   ) {
     this.expressApp = express();
   }
 
   public initRoutes() {
-    this.expressApp.use('/premium', this.cityController.router);
     this.expressApp.use('/users', this.userController.router);
     this.expressApp.use('/offers', this.offerController.router);
     this.expressApp.use('/comments', this.commentController.router);
+    this.expressApp.use('/favorites', this.favoriteController.router);
   }
 
   public initMiddleware() {

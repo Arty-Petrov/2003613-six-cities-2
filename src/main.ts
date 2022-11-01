@@ -1,6 +1,6 @@
-import 'reflect-metadata';
 import { types } from '@typegoose/typegoose';
 import { Container } from 'inversify';
+import 'reflect-metadata';
 import Application from './app/application.js';
 import { ConfigInterface } from './common/config/config.interface.js';
 import ConfigService from './common/config/config.service.js';
@@ -12,13 +12,13 @@ import ExceptionFilter from './common/errors/exception-filter.js';
 import { LoggerInterface } from './common/logger/logger.interface.js';
 import LoggerService from './common/logger/logger.service.js';
 import { CityServiceInterface } from './modules/city/city-service.interface.js';
-import CityController from './modules/city/city.controller.js';
 import { CityEntity, CityModel } from './modules/city/city.entity.js';
 import CityService from './modules/city/city.service.js';
 import { CommentServiceInterface } from './modules/comment/comment-service.interface.js';
 import CommentController from './modules/comment/comment.controller.js';
 import { CommentEntity, CommentModel } from './modules/comment/comment.entity.js';
 import CommentService from './modules/comment/comment.service.js';
+import FavoriteController from './modules/favorite/favorite.controller.js';
 import { OfferServiceInterface } from './modules/offer/offer-service.interface.js';
 import OfferController from './modules/offer/offer.controller.js';
 import { OfferEntity, OfferModel } from './modules/offer/offer.entity.js';
@@ -45,8 +45,8 @@ applicationContainer.bind<types.ModelType<CityEntity>>(Component.CityModel).toCo
 
 applicationContainer.bind<ControllerInterface>(Component.UserController).to(UserController).inSingletonScope();
 applicationContainer.bind<ControllerInterface>(Component.OfferController).to(OfferController).inSingletonScope();
-applicationContainer.bind<ControllerInterface>(Component.CityController).to(CityController).inSingletonScope();
 applicationContainer.bind<ControllerInterface>(Component.CommentController).to(CommentController).inSingletonScope();
+applicationContainer.bind<ControllerInterface>(Component.FavoriteController).to(FavoriteController).inSingletonScope();
 applicationContainer.bind<ExceptionFilterInterface>(Component.ExceptionFilterInterface).to(ExceptionFilter).inSingletonScope();
 
 const application = applicationContainer.get<Application>(Component.Application);
