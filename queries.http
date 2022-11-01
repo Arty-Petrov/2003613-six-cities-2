@@ -32,7 +32,7 @@ Content-Type: application/json
   "email": "torans@overlook.net",
   "avatarUrl": "torrance.png",
   "isPro": true,
-  "password": "shining"
+  "password": "123456"
 }
 ###
 
@@ -56,6 +56,7 @@ Content-Type: application/json
 ## Отправка аватарки пользователю
 
 POST http://localhost:4000/users/635bc7fc426b0cf925300c60/avatar HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imhvc3RAbWlyLmxvY2FsIiwiaWQiOiI2MzViYzdmYzQyNmIwY2Y5MjUzMDBjMjUiLCJpYXQiOjE2NjcyOTM5NDksImV4cCI6MTY2NzQ2Njc0OX0.yh4X7NtUniCQ5iq_vxm3W-lyyFiKdLef1_wUsZIxrOg
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
@@ -65,7 +66,7 @@ Content-Type: image/png
 < /Users/tema/Documents/htmlacademy/tmp/user.png
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
-
+###
 
 # Объявления
 ## Список объявлений
@@ -140,12 +141,13 @@ GET http://localhost:4000/offers/635bc7fc426b0cf925300c31/premium HTTP/1.1
 
 ###
 ## Список комментариев к объявлению
-GET http://localhost:4000/comments/635bf92bc0711f773551cd46 HTTP/1.1
+GET http://localhost:4000/comments/63602448dd46b227042f0ecb HTTP/1.1
 
 ###
 
 ## Создать комментарий
 POST http://localhost:4000/comments HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imhvc3RAbWlyLmxvY2FsIiwiaWQiOiI2MzViYzdmYzQyNmIwY2Y5MjUzMDBjMjUiLCJpYXQiOjE2NjcyOTM5NDksImV4cCI6MTY2NzQ2Njc0OX0.yh4X7NtUniCQ5iq_vxm3W-lyyFiKdLef1_wUsZIxrOg
 Content-Type: application/json
 
 {

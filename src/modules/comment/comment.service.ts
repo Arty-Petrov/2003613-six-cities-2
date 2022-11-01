@@ -2,10 +2,10 @@ import { DocumentType, types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
 import mongoose from 'mongoose';
 import { LoggerInterface } from '../../common/logger/logger.interface.js';
+import { CommentsListCount } from '../../const/index.js';
 import { Component } from '../../types/component.types.js';
 import { SortType } from '../../types/sort-type.enum.js';
 import { CommentServiceInterface } from './comment-service.interface.js';
-import { DEFAULT_COMMENTS_COUNT } from './comment.const.js';
 import { CommentEntity } from './comment.entity.js';
 import CreateCommentDto from './dto/create-comment.dto.js';
 
@@ -60,7 +60,7 @@ export default class CommentService implements CommentServiceInterface {
   public async findByOfferId(offerId: string): Promise<DocumentType<CommentEntity>[] | null> {
     return this.commentModel
       .find({offerId: offerId})
-      .limit(DEFAULT_COMMENTS_COUNT)
+      .limit(CommentsListCount.Max)
       .sort({postDate: SortType.Down})
       .populate(['userId'])
       .exec();
