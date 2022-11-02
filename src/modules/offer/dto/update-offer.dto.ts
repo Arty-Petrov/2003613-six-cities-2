@@ -1,4 +1,3 @@
-//TODO Сделать валидацию DTO
 import {
   ArrayMaxSize,
   ArrayMinSize,

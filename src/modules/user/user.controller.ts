@@ -22,9 +22,9 @@ export default class UserController extends Controller {
   constructor(
     @inject(Component.LoggerInterface) logger: LoggerInterface,
     @inject(Component.UserServiceInterface) private readonly userService: UserServiceInterface,
-    @inject(Component.ConfigInterface) private readonly configService: ConfigInterface,
+    @inject(Component.ConfigInterface) configService: ConfigInterface,
   ) {
-    super(logger);
+    super(logger, configService);
     this.logger.info('Register routes for UserController…');
 
     this.addRoute({
@@ -104,7 +104,7 @@ export default class UserController extends Controller {
       { email: user.email, id: user.id}
     );
     this.logger.info(`Authorization: Bearer: ${token}`);
-    this.ok(res, fillDTO(LoggedUserResponse, {email: user.email, token}));
+    this.ok(res, {...fillDTO(LoggedUserResponse, user), token});
   }
 
 
@@ -121,8 +121,9 @@ export default class UserController extends Controller {
   }
 
   public async uploadAvatar(req: Request, res: Response) {
-    this.created(res, {
-      filepath: req.file?.path
-    });
+    const {userId} = req.params;
+    const avatarUrl = {avatarUrl: req.file?.filename};
+    await this.userService.updateById(userId, avatarUrl);
+    this.created(res, fillDTO(LoggedUserResponse, avatarUrl));
   }
 }

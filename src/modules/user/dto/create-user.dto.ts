@@ -1,4 +1,4 @@
-import { IsBoolean, IsEmail, IsString, Length, Matches } from 'class-validator';
+import { IsBoolean, IsEmail, IsString, Length } from 'class-validator';
 import { UserNameLength, UserPasswordLength } from '../../../const/index.js';
 
 export default class CreateUserDto {
@@ -10,9 +10,6 @@ export default class CreateUserDto {
 
   @IsEmail({}, {message: 'email must be valid address'})
   public email!: string;
-
-  @Matches(/[\w/-]+.(jpg|png)/, { message: 'Avatar image must be jpg or png' })
-  public avatarUrl!: string;
 
   @IsBoolean()
   public isPro!: boolean;
