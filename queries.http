@@ -59,7 +59,7 @@ GET http://localhost:4000/offers?count=5 HTTP/1.1
 
 ## Объявление по идентификатору
 
-GET http://localhost:4000/offers/63597a7e95a2767ad5fdc1c8 HTTP/1.1
+GET http://localhost:4000/offers/635bc7fc426b0cf925300c39 HTTP/1.1
 
 ###
 
@@ -100,7 +100,7 @@ Content-Type: application/json
 
 ## Удаление объявления
 
-DELETE http://localhost:4000/offers/635bc7fc426b0cf925300c2b HTTP/1.1
+DELETE http://localhost:4000/offers/635bc7fc426b0cf925300c39 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imhvc3RAbWlyLmxvY2FsIiwiaWQiOiI2MzViYzdmYzQyNmIwY2Y5MjUzMDBjMjUiLCJpYXQiOjE2NjcyOTM5NDksImV4cCI6MTY2NzQ2Njc0OX0.yh4X7NtUniCQ5iq_vxm3W-lyyFiKdLef1_wUsZIxrOg
 
 ###

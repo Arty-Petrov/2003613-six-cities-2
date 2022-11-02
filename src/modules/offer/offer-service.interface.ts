@@ -16,4 +16,5 @@ export interface OfferServiceInterface extends DocumentExistsInterface{
   findPremiums(cityId: string): Promise<DocumentType<OfferEntity>[]>;
   findFavorites(favorites: string[]): Promise<DocumentType<OfferEntity>[]>;
   updateCommentsCountAndRating(offerId: string, rating: number, commentsCount: number): Promise<DocumentType<OfferEntity> | null>;
+  isOwner(currentUserId: string, offerId: string): Promise<boolean>;
 }

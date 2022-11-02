@@ -1,6 +1,7 @@
 import express, { Express } from 'express';
 import { inject, injectable } from 'inversify';
 import 'reflect-metadata';
+import cors from 'cors';
 import { ConfigInterface } from '../common/config/config.interface.js';
 import { ControllerInterface } from '../common/controller/controller.interface.js';
 import { DatabaseInterface } from '../common/database-client/database.interface.js';
@@ -48,6 +49,7 @@ export default class Application {
 
     const authenticateMiddleware = new AuthenticateMiddleware(this.config.get('JWT_SECRET'));
     this.expressApp.use(authenticateMiddleware.execute.bind(authenticateMiddleware));
+    this.expressApp.use(cors());
   }
 
   public initExceptionFilters() {
