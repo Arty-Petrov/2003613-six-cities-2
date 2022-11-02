@@ -1,8 +1,8 @@
 import typegoose, { defaultClasses, getModelForClass, Ref, Severity } from '@typegoose/typegoose';
-import { City } from '../../const/city.enum.js';
-import { Features } from '../../const/features.enum.js';
-import { OfferType } from '../../const/offer-type.enum.js';
 import { Address } from '../../types/address.type.js';
+import { Features } from '../../types/features.enum.js';
+import { OfferType } from '../../types/offer-type.enum.js';
+import { CityEntity } from '../city/city.entity.js';
 import { UserEntity } from '../user/user.entity.js';
 
 const {prop, modelOptions} = typegoose;
@@ -29,16 +29,16 @@ export class OfferEntity extends defaultClasses.TimeStamps {
     minlength: 20,
     maxlength: 1024
   })
-  public offerDescription!: string;
+  public description!: string;
 
   @prop({required: true})
   public postDate!: Date;
 
   @prop({
     required: true,
-    allowMixed: Severity.ALLOW
+    ref: CityEntity
   })
-  public city!: City;
+  public cityId!: Ref<CityEntity>;
 
   @prop({required: true})
   public preview!: string;
@@ -51,15 +51,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({required: true})
   public isPremium!: boolean;
 
-  @prop({required: true})
-  public isFavorite!: boolean;
-
-  @prop({
-    required: true,
-    min: 1,
-    max: 5,
-    default: 1
-  })
+  @prop({default: 0})
   public rating!: number;
 
   @prop({
@@ -105,7 +97,10 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({default: 0})
   public commentsCount!: number;
 
-  @prop({required: true})
+  @prop({
+    required: true,
+    allowMixed: Severity.ALLOW
+  })
   public address!: Address;
 }
 

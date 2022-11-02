@@ -1,18 +1,20 @@
 import { DocumentType } from '@typegoose/typegoose';
-import { City } from '../../const/city.enum.js';
+import { DocumentExistsInterface } from '../../types/document-exist.interface.js';
 import CreateOfferDto from './dto/create-offer.dto.js';
 import UpdateOfferDto from './dto/update-offer.dto.js';
 import { OfferEntity } from './offer.entity.js';
 
-export interface OfferServiceInterface {
+export interface OfferServiceInterface extends DocumentExistsInterface{
+  find(limit: number): Promise<DocumentType<OfferEntity>[]>;
+  show(offerId: string): Promise<DocumentType<OfferEntity> | null>;
+  exists(offerId: string): Promise<boolean>;
   create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity | null>>;
-  update(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null>;
-  delete(offerId: string): Promise<void>;
+  updateById(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null>;
+  deleteById(offerId: string): Promise<DocumentType<OfferEntity> | null>;
   addToFavorites(offerId: string, userId: string): Promise<DocumentType<OfferEntity> | null>
   removeFromFavorites(offerId: string, userId: string): Promise<DocumentType<OfferEntity> | null>
-  find(): Promise<DocumentType<OfferEntity>[]>;
-  findById(offerId: string): Promise<DocumentType<OfferEntity> | null>;
-  findPremiumByCity(city: City): Promise<DocumentType<OfferEntity>[]>;
-  updateCommentsCountAndRating(offerId: string, ratingsSum: number): Promise<DocumentType<OfferEntity> | null>;
-  exists(documentId: string): Promise<boolean>;
+  findPremiums(cityId: string): Promise<DocumentType<OfferEntity>[]>;
+  findFavorites(favorites: string[]): Promise<DocumentType<OfferEntity>[]>;
+  updateCommentsCountAndRating(offerId: string, rating: number, commentsCount: number): Promise<DocumentType<OfferEntity> | null>;
+  isOwner(currentUserId: string, offerId: string): Promise<boolean>;
 }

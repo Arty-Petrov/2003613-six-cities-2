@@ -230,11 +230,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/AuthErrorMessage'
 
-  /favorite/{offerId}/{status}:
+  /favorite/{offerId}/:
     post:
       tags:
         - offers
-      summary: Добавление/удаление предложения по аренде в/из пользовательского списка "Избранное".
+      summary: Добавление предложения по аренде в пользовательский список "Избранное".
       description: Сервис изменяет статус поля favorite у предложения по аренде. Сервис доступен авторизованным клиентам.
       parameters:
         - name: X-Token
@@ -251,13 +251,45 @@ paths:
           schema:
             type: string
             example: tDBrmkMbToBPh7B6fhqswCEU
-        - name: action
-          in: query
-          description: Тип действия 1 — добавить в список избранных, 0 — удалить из списка избранных.
+      responses:
+        "200":
+          description: Статус предложения обновлен. Обновленный объект предложения.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+        "401":
+          description: Пользователь не авторизован.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthErrorMessage'
+        "404":
+          description: Предложение не найдено.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundErrorMessage'
+    delete:
+      tags:
+        - offers
+      summary: Удаление предложения по аренде из пользовательского списка "Избранное".
+      description: Сервис изменяет статус поля favorite у предложения по аренде. Сервис доступен авторизованным клиентам.
+      parameters:
+        - name: X-Token
+          in: header
+          description: Токен авторизации пользователя.
           required: true
           schema:
-            type: number
-            example: 1
+            type: string
+            example: tDBrmkMbToBPh7B6fhqswCEU
+        - name: offerId
+          in: path
+          description: ID предложения.
+          required: true
+          schema:
+            type: string
+            example: tDBrmkMbToBPh7B6fhqswCEU
       responses:
         "200":
           description: Статус предложения обновлен. Обновленный объект предложения.
@@ -278,7 +310,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/NotFoundErrorMessage'
 
-  /premium{city}:
+  /offers/{city}/premium:
     get:
       tags:
         - offers

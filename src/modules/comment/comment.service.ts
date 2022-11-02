@@ -1,12 +1,19 @@
 import { DocumentType, types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
+import mongoose from 'mongoose';
 import { LoggerInterface } from '../../common/logger/logger.interface.js';
+import { CommentsListCount } from '../../const/index.js';
 import { Component } from '../../types/component.types.js';
 import { SortType } from '../../types/sort-type.enum.js';
 import { CommentServiceInterface } from './comment-service.interface.js';
-import { DEFAULT_COMMENTS_COUNT } from './comment.const.js';
 import { CommentEntity } from './comment.entity.js';
 import CreateCommentDto from './dto/create-comment.dto.js';
+
+
+type OfferRatingUpdate = {
+  offerRating: number,
+  commentsCount: number
+}
 
 @injectable()
 export default class CommentService implements CommentServiceInterface {
@@ -15,23 +22,29 @@ export default class CommentService implements CommentServiceInterface {
     @inject(Component.CommentModel) private readonly commentModel: types.ModelType<CommentEntity>,
   ) {}
 
-  public async calcRatingsByOfferId(offerId: string): Promise<number> {
-    const ratingsSum: {_id: null, total: number}[] =
+  public async calcRatingsByOfferId(offerId: string): Promise<OfferRatingUpdate> {
+    const id = new mongoose.Types.ObjectId(offerId);
+    const offerRatingUpdate =
       await this.commentModel
         .aggregate([
-          {$match: {offerId: offerId}},
-          {$group: {_id: null, total: {$sum: '$rating'}}},
+          {$match: {
+            offerId: {$eq: id}
+          }},
+          {$group: {
+            _id: null,
+            ratingSum: {'$sum': '$rating'},
+            count: {'$sum': 1},
+          }},
         ])
         .exec();
-
-    const commentsCount: number =
-      this.commentModel
-        .findById(offerId).commentCount++;
-
-    return (ratingsSum[0].total / commentsCount)?? 0;
+    console.log(`${offerRatingUpdate[0].ratingSum}  ${offerRatingUpdate[0].count}`);
+    return {
+      offerRating : offerRatingUpdate[0].ratingSum / offerRatingUpdate[0].count,
+      commentsCount: offerRatingUpdate[0].count,
+    };
   }
 
-  public async createComment(dto: CreateCommentDto): Promise<DocumentType<CommentEntity> | null> {
+  public async create(dto: CreateCommentDto): Promise<DocumentType<CommentEntity> | null> {
     const comment = await this.commentModel.create(dto);
     this.logger.info('New comment was created');
     return comment.populate(['userId']);
@@ -41,12 +54,13 @@ export default class CommentService implements CommentServiceInterface {
     this.commentModel
       .deleteMany({offerId})
       .exec();
+    this.logger.info(`Comments of offer with id ${offerId} was deleted`);
   }
 
   public async findByOfferId(offerId: string): Promise<DocumentType<CommentEntity>[] | null> {
     return this.commentModel
       .find({offerId: offerId})
-      .limit(DEFAULT_COMMENTS_COUNT)
+      .limit(CommentsListCount.Max)
       .sort({postDate: SortType.Down})
       .populate(['userId'])
       .exec();
